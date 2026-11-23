@@ -1,4 +1,4 @@
-"""灵台（LINGTAI）算子骨架单测：名帖完整、桩位齐整、只增不覆盖。"""
+"""灵台（LINGTAI）算子单测：名帖完整、行为达标、只增不覆盖。"""
 import unittest
 
 from lingtai import Lingtai
@@ -15,13 +15,12 @@ class TestLingtai(unittest.TestCase):
         self.assertTrue(d["anchor"].startswith("Ω₀⊂⊙∞⊂Ω"))
         self.assertTrue(d["mingwen"])
 
-    def test_store_stub(self):
-        with self.assertRaises(NotImplementedError):
-            self.op.store(None)
-
-    def test_recall_stub(self):
-        with self.assertRaises(NotImplementedError):
-            self.op.recall(None)
+    def test_store_recall(self):
+        rid = self.op.store({"topic": "昆仑", "note": "世界模型"})
+        self.assertTrue(rid.startswith("LT-"))
+        hits = self.op.recall("昆仑")
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(self.op.recall("无有"), [])
 
 
 if __name__ == "__main__":
